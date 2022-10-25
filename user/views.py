@@ -1,18 +1,35 @@
-from django.shortcuts import render
+from django.contrib.auth import login, logout, admin
+
+from rest_framework import generics
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework import views
 from rest_framework.response import Response
 
-from .import serializers
+from . import serializers
 
+#To login
 class LoginView(views.APIView):
-    #allow eve the unauthenticated people to view the page
-    permission_classes=(permissions.AllowAny,)
+    # This view should be accessible also for unauthenticated users.
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        serializer= serializers.LoginSerializer(data=self.request.data,
-            context={'request': self.request})
+        serializer = serializers.LoginSerializer(data=self.request.data, context={ 'request': self.request })
         serializer.is_valid(raise_exception=True)
-        user=serializer.validated_data['user']
+        user = serializer.validated_data['user']
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
+
+#functionality to logout
+class LogoutView(views.APIView):
+
+    def post(self, request, format=None):
+        logout(request)
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+#functionlity ti view profile
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = serializers.UserSerializer
+
+    def get_object(self):
+        return self.request.user
