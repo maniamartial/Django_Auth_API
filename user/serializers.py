@@ -19,6 +19,7 @@ class LoginSerializer(serializers.Serializer):
         write_only=True
     )
 
+#validation of username and password
     def validate(self, attrs):
         # Take username and password from request
         username = attrs.get('username')
@@ -40,9 +41,8 @@ class LoginSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
-
+#We 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = [
@@ -51,3 +51,4 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
         ]
+

@@ -27,7 +27,7 @@ class LogoutView(views.APIView):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-#functionlity ti view profile
+#functionlity the view profile
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
 
